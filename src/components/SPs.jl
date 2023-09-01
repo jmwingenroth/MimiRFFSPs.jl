@@ -57,7 +57,8 @@ end
     start_year = Parameter{Int}(default=Int(2020)) # year (annual) data should start
     end_year = Parameter{Int}(default=Int(2300)) # year (annual) data should end
     country_names = Parameter{String}(index=[country]) # need the names of the countries from the dimension
-    id = Parameter{Int64}(default=Int(6546)) # the sample (out of 10,000) to be used
+    id = Parameter{Int64}(default=Int(6546)) # the sample (out of 10,000) to be used for variables besides emissions
+    id_emissions = Parameter{Int64}(default=Int(4365)) # the sample (out of 10,000) to be used for emissions
     
     population  = Variable(index=[time, country], unit="million")
     population_global  = Variable(index=[time], unit="million")
@@ -149,9 +150,9 @@ end
         end
 
         # fill in the variales
-        ch4_dataset = g_datasets[:ch4][p.id]
-        n2o_dataset = g_datasets[:n2o][p.id]
-        co2_dataset = g_datasets[:co2][p.id]
+        ch4_dataset = g_datasets[:ch4][p.id_emissions]
+        n2o_dataset = g_datasets[:n2o][p.id_emissions]
+        co2_dataset = g_datasets[:co2][p.id_emissions]
         fill_emissions!(ch4_dataset.year, ch4_dataset.value, v.ch4_emissions, p.start_year, p.end_year)
         fill_emissions!(co2_dataset.year, co2_dataset.value, v.co2_emissions, p.start_year, p.end_year)
         fill_emissions!(n2o_dataset.year, n2o_dataset.value, v.n2o_emissions, p.start_year, p.end_year)
